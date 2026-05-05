@@ -3,80 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEMS MINES VIP</title>
+    <title>GEMS MINES VIP - 3D PRO</title>
     <style>
-        :root { --gold: #ffd700; --blue: #00d4ff; --bg: #000c18; }
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: white; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        .panel { background: rgba(0, 20, 40, 0.9); border: 2px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 300px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-        .title { font-size: 28px; color: var(--gold); margin-bottom: 25px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        button { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
-        .btn-trial { background: transparent; border: 2px solid white; color: white; }
-        .btn-vip { background: linear-gradient(to bottom, #ffd700, #b8860b); color: black; }
-        input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid var(--blue); background: #000; color: var(--blue); text-align: center; box-sizing: border-box; }
+        :root { --gold: #ffd700; --blue: #00d4ff; --dark: #000810; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle, #001a33 0%, #000 100%); color: white; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .panel { background: rgba(0, 12, 24, 0.95); border: 2px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,215,0,0.2); transform: perspective(1000px) rotateX(5deg); }
+        .title { font-size: 30px; color: var(--gold); margin-bottom: 25px; font-weight: bold; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+
+        /* أزرار 3D مطورة */
+        .btn-3d { width: 100%; padding: 15px; margin: 12px 0; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 18px; position: relative; transition: all 0.1s; transform-style: preserve-3d; }
+        .btn-vip { background: linear-gradient(145deg, #ffd700, #b8860b); color: #000; box-shadow: 0 6px 0 #8a6d00, 0 10px 20px rgba(0,0,0,0.4); }
+        .btn-vip:active { transform: translateY(4px); box-shadow: 0 2px 0 #8a6d00; }
+        .btn-trial { background: #1a1a1a; color: white; border: 1px solid #444; box-shadow: 0 6px 0 #000; }
+        .btn-trial:active { transform: translateY(4px); box-shadow: 0 2px 0 #000; }
+
+        input { width: 100%; padding: 15px; margin: 15px 0; border-radius: 12px; border: 2px solid var(--blue); background: #000; color: var(--blue); text-align: center; font-size: 18px; box-shadow: inset 0 0 10px rgba(0,212,255,0.2); box-sizing: border-box; }
+        
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 15px; }
+        .cell { width: 52px; height: 52px; background: linear-gradient(145deg, #0a1a2a, #162a3d); border: 1px solid #1a3a5a; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; box-shadow: 0 4px 0 #001122; transition: 0.2s; }
+        .cell:active { transform: translateY(2px); box-shadow: 0 2px 0 #001122; }
+
         .hidden { display: none; }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
-        .cell { width: 50px; height: 50px; background: #0a1a2a; border: 1px solid #1a3a5a; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        #mute-btn { position: fixed; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 8px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <button id="mute-btn" onclick="toggleMusic()">🔊</button>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="screen-1" class="panel">
         <div class="title">GEMS MINES VIP</div>
-        <button class="btn-trial" onclick="next(2)">تجربة مجانية</button>
-        <button class="btn-vip" onclick="vipPrompt()">دخول VIP 🐉</button>
+        <button class="btn-3d btn-trial" onclick="startMusic(); next(2)">تجربة مجانية</button>
+        <button class="btn-3d btn-vip" onclick="startMusic(); vipPrompt()">دخول VIP 🐉</button>
     </div>
 
     <div id="screen-2" class="panel hidden">
-        <div class="title">تحقق من الهوية</div>
+        <div class="title">التحقق الذكي</div>
         <input type="text" id="idInput" placeholder="ادخل ID اللاعب">
-        <button class="btn-vip" onclick="checkID()">استمرار</button>
+        <button class="btn-3d btn-vip" onclick="checkID()">استمرار</button>
     </div>
 
     <div id="screen-3" class="panel hidden">
-        <div class="title">نظام التحليل</div>
+        <div class="title">تفعيل السيرفر</div>
         <input type="password" id="passInput" placeholder="ادخل كود التفعيل">
-        <button class="btn-vip" onclick="checkPass()">تفعيل السيرفر</button>
+        <button class="btn-3d btn-vip" onclick="checkPass()">تفعيل الآن</button>
     </div>
 
-    <div id="screen-game" class="panel hidden" style="width: 320px;">
-        <div class="title" style="font-size: 20px;">تحليل الشبكة الحالية</div>
+    <div id="screen-game" class="panel hidden" style="width: 340px;">
+        <div class="title" style="font-size: 22px;">الرادار المطور V3</div>
         <div class="grid" id="grid"></div>
-        <p style="margin-top: 15px;">💎: <span id="score">0</span> | 💣: <span id="bombs">0</span></p>
-        <button class="btn-trial" onclick="location.reload()">إعادة فحص</button>
+        <p style="margin-top: 15px; font-weight: bold;">💎: <span id="score" style="color:var(--blue)">0</span> | 💣: <span id="bombs" style="color:red">0</span></p>
+        <button class="btn-3d btn-trial" onclick="location.reload()">إعادة فحص الشبكة</button>
     </div>
 
     <script>
         const allowedIDs = ["1658237633", "1002075"];
+        const music = document.getElementById('bgMusic');
+
+        function startMusic() { music.play(); }
+        function toggleMusic() { if(music.paused) music.play(); else music.pause(); }
+
         function next(s) { 
             document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('screen-' + s).classList.remove('hidden');
         }
+
         function vipPrompt() {
             let p = prompt("ادخل باسورد VIP:");
             if(p === "102545") { showGame(); } else { alert("خطأ في الباسورد"); }
         }
+
         function checkID() {
             let id = document.getElementById('idInput').value;
-            if(allowedIDs.includes(id)) { next(3); } else { alert("ID غير مسجل"); }
+            if(allowedIDs.includes(id)) { next(3); } else { alert("ID غير مسجل في السيرفر"); }
         }
+
         function checkPass() {
-            if(document.getElementById('passInput').value === "15711") { showGame(); } else { alert("كود التفعيل خطأ"); }
+            if(document.getElementById('passInput').value === "15711") { showGame(); } else { alert("كود التفعيل غير صحيح"); }
         }
+
         function showGame() {
             document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('screen-game').classList.remove('hidden');
             const g = document.getElementById('grid');
-            const bombPositions = [2, 7, 12, 18];
+            
+            // القنابل: أول مربع يمين (رقم 4) والمربع الرابع من اليمين (رقم 1)
+            // في مصفوفة الـ 5x5: الصف الأول هو 0,1,2,3,4 من اليمين لليسار في RTL
+            const bombPositions = [0, 3]; 
+
             for(let i=0; i<25; i++) {
                 let c = document.createElement('div');
                 c.className = 'cell';
                 c.onclick = () => {
                     if(c.innerHTML !== "") return;
                     if(bombPositions.includes(i)) {
-                        c.innerHTML = "💣"; c.style.background = "#400";
+                        c.innerHTML = "💣"; c.style.background = "rgba(255,0,0,0.2)";
                         document.getElementById('bombs').innerText = "1";
                     } else {
-                        c.innerHTML = "💎"; c.style.background = "#046";
+                        c.innerHTML = "💎"; c.style.background = "rgba(0,212,255,0.2)";
                         let s = document.getElementById('score');
                         s.innerText = parseInt(s.innerText) + 1;
                     }
