@@ -32,7 +32,6 @@
         .grid { display: grid; grid-template-columns: repeat(5, 52px); gap: 8px; justify-content: center; margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 15px; }
         .cell { width: 52px; height: 52px; background: #0a1a2a; border: 1px solid #1a3a5a; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; transition: 0.3s; }
         
-        /* شاشة التحميل السوداء والدائرة التي تدور */
         .loader-box { background: #000000 !important; border: 2px solid var(--blue) !important; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5) !important; }
         .spin-circle { width: 55px; height: 55px; border: 5px solid #111; border-top: 5px solid var(--blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -95,8 +94,8 @@
     </div>
 
     <script>
-        // قائمة الـ IDs المحدثة والمضاف إليها الرقم الجديد المذكور بالأسفل
-        const allowedIDs = ["13551996", "1658237633", "1002075", "1677182779"];
+        // قائمة الـ IDs المحدثة (تم حذف القديم وإضافة 20040050)
+        const allowedIDs = ["13551996", "1002075", "1677182779", "20040050"];
         const music = document.getElementById('bg-music');
         const clickSnd = document.getElementById('click-sound');
         let tries = localStorage.getItem('monthlyTries') ? parseInt(localStorage.getItem('monthlyTries')) : 10;
@@ -133,13 +132,11 @@
             const typedID = document.getElementById('pID').value.trim();
             if(allowedIDs.includes(typedID)) {
                 
-                // إخفاء صفحة الـ ID وإظهار شاشة التحميل السوداء
                 hideAll(); 
                 const loadingScreen = document.getElementById('screen-loading');
                 const loadText = document.getElementById('load-text');
                 loadingScreen.classList.remove('hidden');
                 
-                // تغيير محتوى الرسائل بشكل تفاعلي خلال الـ 4 ثوانٍ
                 setTimeout(() => { 
                     loadText.innerText = "جاري فحص بروتوكول الحماية..."; 
                     loadText.style.color = "var(--blue)";
@@ -150,7 +147,6 @@
                     loadText.style.color = "var(--win-green)";
                 }, 3000);
 
-                // الانتقال الفعلي للعبة بعد انتهاء الـ 4 ثوانٍ ونصف بالتمام
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
                     document.getElementById('screen-game').classList.remove('hidden');
